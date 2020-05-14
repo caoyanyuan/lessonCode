@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app"></div>
+    <button id="btn">click me</button>
+</body>
+
+<script src="./reactive.js"></script>
+<script>
+    const app = document.getElementById('app')
+
+    const obj = {
+        age: 18,
+        name: 'lily'
+    }
+    
+    const rObj = reactive(obj)
+
+    //computed
+    const double = computed(() => rObj.age*2)
+
+    //数据变化之后
+    effect(() => {
+        console.log('数据变了',rObj.age)
+        app.innerHTML = `${rObj.name}今年${rObj.age}, 2倍是${double.value}`
+    })
+
+    const btn = document.getElementById('btn')
+
+    btn.addEventListener('click', () => {
+        ++rObj.age
+    })
+
+</script>
+</html>

@@ -22,7 +22,7 @@ function track(target,key){
       depMap = new Map()
       targetMap.set(target,depMap)
     }
-    let dep = depMap.get(key) // obj.count  target是obj，key是count
+    let dep = depMap.get(key)     // obj.count  target是obj，key是count
     if(dep==undefined){
       dep = new Set()
       depMap.set(key, dep)
