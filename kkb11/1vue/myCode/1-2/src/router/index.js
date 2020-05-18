@@ -1,15 +1,21 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
+import Form from '@/components/form/index'
+import Dialog from '@/components/dialog/index'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
-      path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
+      path: '/form',
+      name: 'form',
+      component: Form
+    },
+    {
+      path: '/dialog',
+      name: 'Dialog',
+      component: Dialog
     }
   ]
 })
