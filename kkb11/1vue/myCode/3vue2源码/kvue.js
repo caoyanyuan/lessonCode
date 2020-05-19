@@ -30,7 +30,7 @@ class KVue {
         const dep = new Dep()
         Object.defineProperty(data, key, {
             get() {
-                console.log(Dep.target)
+                //console.log(Dep.target)
                 Dep.target && dep.addDep(Dep.target);
                 return val
             },
@@ -51,8 +51,8 @@ class Watcher{
         this.cb = cb
 
         Dep.target = this
-        // this.vm[this.key];// 读一次key触发getter
-        // Dep.target = null;
+        this.vm[this.key];// 读一次key触发getter
+        Dep.target = null;
     }
 
     update() {
@@ -81,10 +81,11 @@ let temp = new KVue({
         a: 'xxx'
     }
 })
-new Watcher(this, 'a')
+new Watcher(temp, 'a')
+new Watcher(temp, 'msg')
+
 temp.a
 temp.a = 2
-new Watcher(this, 'msg')
 temp.msg
 temp.msg = 2
 
