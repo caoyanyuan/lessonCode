@@ -10,9 +10,9 @@
 */
 
 /**
- * @param {number} capacity
+ * @param {number} capacity  LRUCache1 Map对象实现 
  */
-var LRUCache = function(capacity) {
+var LRUCache1 = function(capacity) {
     this.max = capacity
     this.cache = new Map()
 };
@@ -21,7 +21,7 @@ var LRUCache = function(capacity) {
  * @param {number} key
  * @return {number}
  */
-LRUCache.prototype.get = function(key) {
+LRUCache1.prototype.get = function(key) {
     let value = this.cache.get(key)
 
     if(!value) return -1
@@ -35,7 +35,7 @@ LRUCache.prototype.get = function(key) {
  * @param {number} value
  * @return {void}
  */
-LRUCache.prototype.put = function(key, value) {
+LRUCache1.prototype.put = function(key, value) {
     this.cache.delete(key)
 
     if(this.cache.size > this.max-1) {
@@ -46,17 +46,97 @@ LRUCache.prototype.put = function(key, value) {
     
 };
 
+
+// LRUCache2 数组实现  复杂度为n
+var LRUCache2 = function(max) {
+    this.max = max
+    this.cache = []
+}
+
+LRUCache2.prototype.put = function(key, value) {
+
+    this.cache.find((item,index) => {
+        let flag = item.key == key
+        if(flag) {
+            this.cache.splice(index, 1)
+            return flag
+        }
+    })
+
+    if(this.cache.length >= this.max) {
+        this.cache.shift()
+    }
+
+    this.cache.push({key, value})
+}
+
+LRUCache2.prototype.get = function(key) {
+
+    let cur, ret = -1
+    this.cache.find((item,index) => {
+        let flag = item.key == key
+        if(flag) {
+            cur = item
+            ret = cur.value
+            this.cache.splice(index, 1)
+            this.cache.push(cur)
+            return flag
+        }
+    })
+    
+    return ret
+}
+
+// 版本 3 数组+对象 复杂度为 1
+var LRUCache = function(max) {
+    this.max = max
+    this.cache = Object.create(null)
+    this.keys = []
+}
+
+LRUCache.prototype.put = function(key, value) {
+    // 如果存在即覆盖
+    if(this.cache[key]) {
+        remove(this.keys, key)
+        this.cache[key] = value
+        this.keys.push(key)
+    }else{
+        if(this.keys.length >= this.max) {
+            delete this.cache[this.keys[0]]
+            this.keys.shift()
+        }
+        this.cache[key] = value
+        this.keys.push(key)
+    }
+}
+
+LRUCache.prototype.get = function(key) {
+    let value = this.cache[key]
+
+    if(value) {
+        remove(this.keys, key)
+        this.keys.push(key)
+    }
+    
+    return value || -1
+}
+
+function remove(arr, key) {
+    let index = arr.indexOf(key)
+
+    arr.splice(index, 1)
+}
+
 let cache = new LRUCache( 2 ); //缓存容量
 
-cache.put(1, 1);
-cache.put(2, 2);
-console.log(cache.get(1));       // 返回  1
+console.log(cache.get(1));
+console.log(cache.get(2));       // 返回  1
 cache.put(3, 3);    // 该操作会使得密钥 2 作废
 console.log(cache.get(2));       // 返回 -1 (未找到)
 cache.put(4, 4);    // 该操作会使得密钥 1 作废
 console.log(cache.get(1));       // 返回 -1 (未找到)
-cache.get(3);       // 返回  3
-cache.get(4);       // 返回  4
+console.log(cache.get(3));       // 返回  3
+console.log(cache.get(4));       // 返回  4
 
 
 //github瓶子君的讲解链接 https://github.com/sisterAn/JavaScript-Algorithms/issues/9
