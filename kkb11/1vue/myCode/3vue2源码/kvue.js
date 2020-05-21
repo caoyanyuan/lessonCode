@@ -5,6 +5,7 @@ class KVue {
         this.$data = opts.data
 
         this.observe(this.$data)
+        new Compile(opts.el, this);
     }   
 
     observe(data) {
@@ -56,7 +57,7 @@ class Watcher{
     }
 
     update() {
-        console.log(`${this.key}属性更新了`);
+        this.cb && this.cb()
     }
 }
 
@@ -81,12 +82,12 @@ let temp = new KVue({
         a: 'xxx'
     }
 })
-new Watcher(temp, 'a')
-new Watcher(temp, 'msg')
+// new Watcher(temp, 'a')
+// new Watcher(temp, 'msg')
 
-temp.a
-temp.a = 2
-temp.msg
-temp.msg = 2
+// temp.a
+// temp.a = 2
+// temp.msg
+// temp.msg = 2
 
 
