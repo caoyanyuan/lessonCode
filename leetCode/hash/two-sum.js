@@ -5,7 +5,7 @@
     给定 nums = [2, 7, 11, 15], target = 9
 
     因为 nums[0] + nums[1] = 2 + 7 = 9
-    所以返回 [0, 1]
+    所以返回 [0, 1] 
 
 */
 
@@ -18,7 +18,7 @@
  * 结果：达不到改善。待继续学习算法之后在讨论。 保留问题
  */
 
-//自己第一次 执行300ms
+//自己第一次 执行300ms n*n 数组的办法解决 
 var twoSum = function(nums, target) {
     let fIndex = null, sIndex = null
     nums.find((num, index) => {
@@ -48,7 +48,7 @@ var twoSum2 = function(nums, target) {
     }
 };
 
-//考虑到复杂度 n
+//考虑到复杂度 n 哈希表的办法解决第二次循环
 var twoSum3 = function(nums, target) {
     let resArr = [],
         ret = []
@@ -65,7 +65,7 @@ var twoSum3 = function(nums, target) {
     return ret
 };
 
-// 4比3 更快 所以for还是比find更快
+// 4比3 更快 所以for还是比find更快 
 var twoSum4 = function(nums, target) {
     let resArr = [],
         len = nums.length
