@@ -88,6 +88,24 @@ class BinaryTree {
             callback(node.val)
         }
     }
+ 
+    //层序遍历 按层次输出每一层的节点
+    levelOrder(root) {
+        let queue = [root], ret = [], node
+
+        while(queue.length) {
+            let len = queue.length
+            
+            for(let i=0; i<len; i++) {
+                node = queue.shift()
+                ret.push(node.val)
+                if(node.left) queue.push(node.left)
+                if(node.right) queue.push(node.right)
+            }
+        }
+
+        return ret
+    }
 
     //寻找最大节点
     max() {
