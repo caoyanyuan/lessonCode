@@ -21,7 +21,7 @@ var isSymmetric1 = function(root) {
 };
 
 // 迭代 层序遍历每一层节点  判断每一层是否对称
-var isSymmetric = function(root) {
+var isSymmetric2 = function(root) {
     if (root === null) return true;
     let node = root;
     let queue = [node];
@@ -59,6 +59,36 @@ function isSame(arr) {
     return true;
 }
 
+// 迭代 栈处理
+/**
+ 利用栈来记录比较的过程，实际上，递归就使用了调用栈，所以这里我们可以使用栈来模拟递归的过程
+    首先根的左右子树入栈
+    将左右子树出栈，比较两个数是否互为镜像
+    如果左右子树的根节点值相等，则将左子树的 left 、右子树的 right 、左子树的 right 、右子树的 left 依次入栈
+    继续出栈（一次出栈两个进行比较）…….
+    依次循环出栈入栈，直到栈为空
+ */
+
+var isSymmetric = function(root) {
+    if(root == null) return true
+
+    
+    let stack = [root.left, root.right]
+
+    while(stack.length) {
+        let left = stack.pop(), right = stack.pop()
+
+        if(left && right) {
+            if(left.val !== right.val) return false
+
+            stack.push(left.left, right.right, left.right, right.left)
+        }else if(left || right){
+            return false
+        }
+    }
+
+    return true
+}
 
 let node = {
     val: 1,
@@ -69,7 +99,12 @@ let node = {
     },
     right: {
         val: 2,
-        left: { val: 4, left: null, right: null},
+        left: null,
         right: { val: 3 , left: null, right: null}
     }
 }
+
+console.log(isSymmetric(node))
+
+
+//https://github.com/sisterAn/JavaScript-Algorithms/issues/53
