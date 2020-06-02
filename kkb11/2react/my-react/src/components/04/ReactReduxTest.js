@@ -4,7 +4,13 @@ import React, {  Component } from "react";
 import { connect } from "react-redux"
 
 
-
+@connect(
+    state => ({num: state}),
+    {
+        add: () => ({type: 'add'}),
+        minus: () => ({type: 'minus'})
+    }
+)
 class ReduxTest extends Component {
     render() {
         return (
@@ -17,13 +23,7 @@ class ReduxTest extends Component {
     }
 }
 
-const ReactRedux = connect(
-    state => ({num: state}),
-    {
-        add: () => ({type: 'add'}),
-        minus: () => ({type: 'minus'})
-    }
-)(ReduxTest)
 
-export default ReactRedux
+
+export default ReduxTest
 
