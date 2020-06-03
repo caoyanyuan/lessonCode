@@ -10,6 +10,8 @@ import { Provider } from 'react-redux'
 
 import ReactReduxTest from "./components/04/ReactReduxTest"
 import MyReduxTest from "./components/04/MyReduxTest"
+import RouterTest from "./components/05/RouterTest"
+
 
 
 
@@ -23,7 +25,8 @@ ReactDom.render(
     //     <ReactReduxTest />
     // </Provider>
     // <FormTest />
-    <MyReduxTest/>
+    // <MyReduxTest/>
+    <RouterTest />
     ,
     document.getElementById("root"))
 
