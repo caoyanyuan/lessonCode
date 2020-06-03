@@ -1,5 +1,9 @@
 import React, { useState } from "react";
-import { BrowserRouter, Link, Route, Redirect } from "react-router-dom";
+// import BrowserRouter from "./BrowserRouter";
+// import Link from "./Link";
+// import Route from "./Route" ;
+
+import { BrowserRouter, Link, Route } from "./myRouter"
 
 function Detail({ match, history, location }) {
     // 输入内容状态及设置内容状态的方法 
@@ -47,19 +51,5 @@ function ReduxTestContainer({ }) {
     );
 }
 
-function PrivateRoute({ component: Component, isLogin, ...rest }) { 
-    // 结构props为component和rest // rest为传递给Route的属性 
-    return ( <Route {...rest} render={ 
-                // 执行登录判断逻辑从而动态生成组件
-                props => isLogin ? ( 
-                    <Component {...props} /> ) : ( 
-                    <Redirect to={{ pathname: "/login", state: { redirect: props.location.pathname } 
-                    }} 
-                />
-            ) 
-        } 
-        /> 
-    ); 
-}
 
-    export default ReduxTestContainer
+export default ReduxTestContainer
