@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { BrowserRouter, Link, Route, Redirect } from "react-router-dom";
+import { login } from "../../store/user.redux"
+import { connect } from "react-redux";
 
 function Detail({ match, history, location }) {
     // 输入内容状态及设置内容状态的方法 
@@ -11,13 +13,28 @@ function Detail({ match, history, location }) {
         }
     };
 
-    console.log(match, history, location)
+    //console.log(match, history, location)
     return (
         <div>
             <input type="text" value={pname} onChange={e => setPname(e.target.value)} />
         </div>
     );
 }
+
+const Login = connect(
+    state => ({
+        isLogin: state.user.isLogin
+    }),
+    { login }
+)(function({ login }){
+    return (
+        <div>
+            <input name="username" />
+            <input name='password' type="password" />
+            <button onClick={login}>登录</button>
+        </div>
+    )
+})
 
 function ReduxTestContainer({ }) {
     const [loading, setLoading] = useState(true)
@@ -41,13 +58,16 @@ function ReduxTestContainer({ }) {
                 <Route exact path="" render={
                     props => loading ? <div>数据加载中...</div> : <Route path="/detail2" component={Detail} />
                 } />
-                <Route path="/detail" component={Detail} />
+                <PrivateRoute path="/detail" component={Detail}  />
+                <Route path="/login" component={Login} />
             </div>
         </BrowserRouter>
     );
 }
 
-function PrivateRoute({ component: Component, isLogin, ...rest }) { 
+const PrivateRoute = connect(state => ({
+    isLogin: state.user.isLogin
+}))(({ component: Component, isLogin, ...rest }) =>{ 
     // 结构props为component和rest // rest为传递给Route的属性 
     return ( <Route {...rest} render={ 
                 // 执行登录判断逻辑从而动态生成组件
@@ -60,6 +80,6 @@ function PrivateRoute({ component: Component, isLogin, ...rest }) {
         } 
         /> 
     ); 
-}
+})
 
-    export default ReduxTestContainer
+export default ReduxTestContainer
