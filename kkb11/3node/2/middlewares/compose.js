@@ -43,3 +43,5 @@ const mws = [ fn1, fn2, fn3 ]
 const finalFn = compose(mws)
 //console.log(finalFn)
 finalFn()
+
+
