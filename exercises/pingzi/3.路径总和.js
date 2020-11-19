@@ -9,7 +9,8 @@
 //     this.left = this.right = null;
 // }
 
-function hasSum(node, sum){
+//深度优先遍历
+function hasSum1(node, sum){
     if (node === null) return false;
 
     if(node.val == sum && node.left == null && node.right==null) return true
@@ -28,6 +29,38 @@ function hasSum(node, sum){
     
 }   
 
+//迭代
+var hasSum = function(root, sum) {
+    let stack = [root],
+        sumStack = [sum - root.val]
+
+    while(stack.length > 0) {
+        let node = stack.pop()
+        let curSum = sumStack.pop()
+
+        if(node.left==null && node.right==null &&  curSum == 0) return true
+
+        if(node.left) {
+            stack.push(node.left)
+            sumStack.push(curSum - node.val)
+        }
+        if(node.right) {
+            stack.push(node.right)
+            sumStack.push(curSum - node.val)
+        }
+    }
+
+    return false
+}
+
+/**
+ * 
+递归（recursion）：递归常被用来描述以自相似方法重复事物的过程，在数学和计算机科学中，指的是在函数定义中使用函数自身的方法。（A调用A）
+迭代（iteration）：重复反馈过程的活动，每一次迭代的结果会作为下一次迭代的初始值。（A重复调用B）
+递归是一个树结构，从字面可以其理解为重复“递推”和“回归”的过程，当“递推”到达底部时就会开始“回归”，其过程相当于树的深度优先遍历。
+迭代是一个环结构，从初始状态开始，每次迭代都遍历这个环，并更新状态，多次迭代直到到达结束状态。
+理论上递归和迭代时间复杂度方面是一样的，但实际应用中（函数调用和函数调用堆栈的开销）递归比迭代效率要低。
+ */
 
 let node = {
     val: 5,
