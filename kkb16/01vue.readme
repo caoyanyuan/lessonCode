@@ -1,0 +1,37 @@
+微信公众号授权实现（前端实现）
+
+官方文档： https://developers.weixin.qq.com/doc/offiaccount/OA_Web_Apps/Wechat_webpage_authorization.html
+
+### 一 具体步骤
+
+1. 微信公众账号提供用户请求授权页面URL。
+
+2. 用户点击授权页面URL，将向服务器发起请求
+3. scope为snsapi_base时：服务器同意授权给微信公众账号
+4. 服务器将CODE通过回调传给微信公众账号
+5. 微信公众账号通过CODE向服务器请求Access Token，服务器返回Access Token和OpenID给微信公众账号完成授权
+
+### 二 实现
+
+1. 授权页面拼接URL
+
+   ![image-20201128144955912](/Users/caoyanyuan/Library/Application Support/typora-user-images/image-20201128144955912.png)
+
+
+
+redirect_uri:  必须为https的安全域名，证书配置必须为本域名下的，开发过程中后台将别的域名的安全证书绑到公众号的域名上。。在公众号打开就会一片白。无法加载界面；
+
+![image-20201128145449116](/Users/caoyanyuan/Library/Application Support/typora-user-images/image-20201128145449116.png)
+
+
+
+### 
+
+
+
+
+
+
+
+
+

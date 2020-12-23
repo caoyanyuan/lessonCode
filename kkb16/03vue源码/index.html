@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        const obj = {}
+
+        function defineReactive(obj, key, val) {
+            observe(val)
+
+            Object.defineProperty(obj, key, {
+                get() {
+                    console.log(`get ${key}`)
+                    return val
+                },
+                set(newVal) {
+                    if(newVal != val) {
+                        console.log(`set ${key}: ${newVal}`);
+                        val = newVal
+                    }
+                }
+            })
+        }
+
+        function observe(obj) {
+            
+            if(typeof obj != 'object' || obj == null) return
+
+            if(obj instanceof Array) {
+                dealArrayObserve(obj)
+            }
+
+            Object.keys(obj).forEach(key => {
+                defineReactive(obj, key, obj[key])
+            })
+        }
+
+        //处理数组双向绑定
+        function dealArrayObserve(obj) {
+            const arrProto = Array.prototype;
+            const arrMethods = Object.create(arrProto);
+            [
+            'push',
+            'pop',
+            'shift',
+            'unshift',
+            'splice',
+            'sort',
+            'reverse'
+            ].forEach(method => {
+                Object.defineProperty(arrMethods,method,{
+                    value:function mutator(val){
+                        const original = arrProto[method]
+                        let args = Array.from(arguments)
+                        
+                        original.apply(this, args)
+                    }
+                })
+            })
+            
+            //改写每一个数组的__proto__指向
+            obj.__proto__ = arrMethods
+        }
+         
+        let temp = []
+        observe(temp)
+
+        temp.push(1)
+        temp.unshift(2)
+
+        console.log(temp)
+       
+
+    </script>
+</body>
+</html>
