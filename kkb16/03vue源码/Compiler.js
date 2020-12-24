@@ -71,6 +71,12 @@ class Compiler {
     }
 
     compileText(node){
-        node.textContent = this.$vm[RegExp.$1]
+        let key = RegExp.$1
+
+        node.textContent = this.$vm[key]
+
+        new Watcher(this.$vm, key, () => {
+            node.textContent = this.$vm[RegExp.$1]
+        })
     }
 }
