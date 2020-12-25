@@ -32,18 +32,38 @@ class Compiler {
                 exp = attr.value
             
             if(this.isDirective(attrName)) {
-                let dir = attrName.substring(2) + 'Updator'
+                let dir = attrName.substring(2)
 
                 this[dir] && this[dir](node, exp)
             }
         })
     }
 
-    htmlUpdator(node, exp) {
-        node.textContent = this.$vm[exp]
+    update(node, exp, type) {
+        let fn = this[type+'Updater']
+
+        //初始化设置
+        fn && fn(node, this.$vm[exp])
+
+        new Watcher(this.$vm, exp, function(val) {
+            fn && fn(node, val)
+        })
+    }
+
+    html(node, exp) {
+        this.update(node, exp, 'html')
+    }
+    htmlUpdater(node, val) {
+        node.innerHTML = val
+    }
+    textUpdater(node, val) {
+        node.textContent = val
+    }
+    modelUpdater(node, val) {
+        node.value = val
     }
     
-    clickUpdator(node, exp) {
+    click(node, exp) {
         let fn = this.$vm.$options.methods[exp]
 
         node.addEventListener('click', () => {
@@ -51,12 +71,16 @@ class Compiler {
         })
     }
     //k-model 双向绑定
-    modelUpdator(node, exp) {
-        node.value = this.$vm[exp]
+    model(node, exp) {
+        this.update(node, exp, 'model')
         
-        node.addEventListener('input', (el) => {
+        node.addEventListener('input', () => {
             this.$vm[exp] = node.value
         })
+    }
+
+    compileText(node){
+        this.update(node, RegExp.$1, 'text')
     }
 
     isElement(node) {
@@ -70,13 +94,5 @@ class Compiler {
         return  node.nodeType == 3 && /\{\{(.*)\}\}/.test(node.textContent)
     }
 
-    compileText(node){
-        let key = RegExp.$1
-
-        node.textContent = this.$vm[key]
-
-        new Watcher(this.$vm, key, () => {
-            node.textContent = this.$vm[RegExp.$1]
-        })
-    }
 }
+   

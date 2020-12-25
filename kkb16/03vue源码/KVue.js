@@ -2,19 +2,18 @@ function defineReactive(obj, key, val) {
     observe(val)
 
     const dep = new Dep()
+    
     Object.defineProperty(obj, key, {
         get() {
             // console.log(`get ${key}`)
-
-            console.log(Dep.target)
             Dep.target && dep.addDep(Dep.target);
             return val
         },
         set(newVal) {
             if(newVal != val) {
-                console.log(`set ${key}: ${newVal}`);
+                
                 val = newVal
-                dep.notify()
+                dep.notify(val)
             }
         }
     })
@@ -66,49 +65,52 @@ function proxyData(vm) {
     })
 }
 
+//监听者： 保存更新函数，
 class Watcher{
-    constructor(vm, key, cb) {
+    constructor(vm, key, updateFn) {
         this.vm = vm
         this.key = key
-        this.cb = cb
+        this.updateFn = updateFn
 
+        //每次新建一个watch 默认调用一次 触发get收集依赖
         Dep.target = this
-        console.log(this.vm[this.key])
-        this.vm[this.key];// 读一次key触发getter
-        Dep.target = null;
+        this.vm[this.key]
+        Dep.target = null
     }
 
     update() {
-        this.cb && this.cb()
+        this.updateFn && this.updateFn.call(this.vm, this.vm[this.key])
     }
 }
 
-class Dep {
+//收集依赖
+class Dep{
     constructor() {
         this.deps = []
+
     }
 
     addDep(watcher) {
         this.deps.push(watcher)
-    }
+    }   
 
+    //通知所有变化
     notify() {
-        console.log(this.deps)
-        this.deps.map(watcher => watcher.update())
+        this.deps.forEach(dep => dep.update())
     }
 }
 
 
-// let temp = new KVue({
-//     data: {
-//         msg: 'hello',
-//         a: 'xxx'
-//     }
-// })
-// new Watcher(temp, 'a', () => {
-//     console.log('改变了啊')
-// })
-// new Watcher(temp, 'a')
+let temp = new KVue({
+    data: {
+        msg: 'hello',
+        a: 'xxx'
+    }
+})
+new Watcher(temp, 'a', (val) => {
+    console.log('改变了啊', val)
+})
+new Watcher(temp, 'a')
 
 
-// temp.a = 'abc'
+temp.a = 'abc'
