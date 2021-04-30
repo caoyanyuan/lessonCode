@@ -5,8 +5,6 @@ import store from './store'
 
 Vue.config.productionTip = false
 
-let arr = [1,2,4,5]
-arr.map
 
 new Vue({
   router,
