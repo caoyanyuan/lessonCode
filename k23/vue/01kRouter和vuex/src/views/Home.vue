@@ -1,6 +1,10 @@
 <template>
   <div class="home">
-    我是首页
+    {{$store.state.counter}}
+
+    <div>doubled: {{$store.getters.doubleCounter}}</div>
+
+    <button @click="$store.dispatch('addCounter')">counter自增</button>
   </div>
 </template>
 
