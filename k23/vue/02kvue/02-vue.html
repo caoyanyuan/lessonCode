@@ -11,22 +11,24 @@
 </head>
 <body>
     <div id="root">
-        <span>{{msg}}</span>
+        
+        <div>
+            {{msg}}
+            <input v-model=msg />
+            <button>{{msg}}</button>
+        </div>
+        <button>点击</button>
     </div>
 
     <script>
-        new KVue({
+        let vm = new KVue({
             data: {
                 msg: "hello world"
             },
             el: "root"
         })
 
-        function foo() {
-            setTimeout(foo, 0);
-        }
-        foo();
-        
+        vm.msg = "abc"
     </script>
 </body>
 </html>

@@ -19,8 +19,8 @@ class Compile {
         const fragment = document.createDocumentFragment();
         let child;
         while ((child = el.firstChild)) {
-        // 由于appenChild是移动操作
-        fragment.appendChild(child);
+            // 由于appenChild是移动操作
+            fragment.appendChild(child);
         }
         return fragment;
     }

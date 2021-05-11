@@ -9,7 +9,8 @@ class KVue{
         this.$data = opts.data
 
         this.observe(this.$data)
-        new Compile(this)
+        let dom = new Compile(this)
+        document.getElementById(opts.el).appendChild(dom)
     }
 
     observe(value) {
