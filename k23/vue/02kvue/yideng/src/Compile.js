@@ -41,7 +41,7 @@ Compile.prototype = {
             if(name.indexOf('v-') > -1){
                 let dir = name.substring(2)
 
-                this[dir] && this[dir]
+                this[dir] && this[dir](vm, node, value)
             }
         })
     },
@@ -52,17 +52,32 @@ Compile.prototype = {
 
         new Watcher(vm, key, () => {
             node.nodeValue = vm[key]
+            console.log('这里几遍了')
         })
 
         node.nodeValue = vm[key]
     },
 
-    model() {
-        this.update()
+    model(vm, node, value) {
+        this.update(vm, node, value, 'model')
 
         node.addEventListener('input', function(el){
             vm[value] = node.value
         })
+    },
+
+    update(vm, node, value, exp) {
+        this[exp+'Updator'] && this[exp+'Updator'](vm, node, value)
+
+        new Watcher(vm, value, () => {
+            node.nodeValue = vm[value]
+        })
+
+    },
+
+    modelUpdator(vm, node, value) {
+        node.value = vm[value]
+       
     }
     
 }
